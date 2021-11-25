@@ -4,6 +4,7 @@ import { searchDevtools } from 'electron-search-devtools';
 
 const isDev = process.env.NODE_ENV === 'development';
 
+/// #if DEBUG
 const execPath =
   process.platform === 'win32'
     ? '../node_modules/electron/dist/electron.exe'
@@ -17,6 +18,7 @@ if (isDev) {
     hardResetMethod: 'exit',
   });
 }
+/// #endif
 
 // BrowserWindow インスタンスを作成する関数
 const createWindow = () => {
