@@ -1,6 +1,8 @@
 import path from 'path';
-import { BrowserWindow, app, session } from 'electron';
+import { BrowserWindow, app, session, ipcMain } from 'electron';
 import { searchDevtools } from 'electron-search-devtools';
+
+import electronDl, { download } from 'electron-dl';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -20,6 +22,9 @@ if (isDev) {
 }
 /// #endif
 
+// setup electron-dl
+electronDl();
+
 // BrowserWindow インスタンスを作成する関数
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
@@ -35,6 +40,13 @@ const createWindow = () => {
 
   // レンダラープロセスをロード
   mainWindow.loadFile('dist/index.html');
+
+  // ダウンロード処理
+  ipcMain.handle('download', async (_event, urls: string[]) => {
+    await Promise.all(urls.map((url) => {
+      return download(mainWindow, url);
+    }));
+  });
 };
 
 app.whenReady().then(async () => {
