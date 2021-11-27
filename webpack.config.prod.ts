@@ -1,7 +1,7 @@
-import path from 'path';
-import { Configuration } from 'webpack';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import path from 'path'
+import { Configuration } from 'webpack'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 
 const base: Configuration = {
   mode: 'production',
@@ -23,10 +23,7 @@ const base: Configuration = {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        use: [
-          { loader: 'ts-loader' },
-          { loader: 'ifdef-loader', options: { DEBUG: false } },
-        ],
+        use: [{ loader: 'ts-loader' }, { loader: 'ifdef-loader', options: { DEBUG: false } }],
       },
       {
         test: /\.s?css$/,
@@ -48,7 +45,7 @@ const base: Configuration = {
   performance: { hints: false },
   optimization: { minimize: true },
   devtool: undefined,
-};
+}
 
 const main: Configuration = {
   ...base,
@@ -56,7 +53,7 @@ const main: Configuration = {
   entry: {
     main: './src/main.ts',
   },
-};
+}
 
 const preload: Configuration = {
   ...base,
@@ -64,7 +61,7 @@ const preload: Configuration = {
   entry: {
     preload: './src/preload.ts',
   },
-};
+}
 
 const renderer: Configuration = {
   ...base,
@@ -82,6 +79,6 @@ const renderer: Configuration = {
       scriptLoading: 'blocking',
     }),
   ],
-};
+}
 
-export default [main, preload, renderer];
+export default [main, preload, renderer]

@@ -1,9 +1,9 @@
-import path from 'path';
+import path from 'path'
 
-import { Configuration } from 'webpack';
+import { Configuration } from 'webpack'
 
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 
 const config: Configuration = {
   mode: 'development',
@@ -88,6 +88,6 @@ const config: Configuration = {
    * 表示されてしまうことに注意
    */
   devtool: 'inline-source-map',
-};
+}
 
-export default config;
+export default config
