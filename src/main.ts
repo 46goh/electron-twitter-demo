@@ -2,6 +2,7 @@ import path from 'path'
 import { BrowserWindow, app, session, ipcMain } from 'electron'
 import ElectronReload from 'electron-reload'
 import { searchDevtools } from 'electron-search-devtools'
+import Twitter from 'twitter-v2'
 
 import electronDl, { download } from 'electron-dl'
 
@@ -43,12 +44,29 @@ const createWindow = () => {
   mainWindow.loadFile('dist/index.html')
 
   // ダウンロード処理
-  ipcMain.handle('download', async (_event, urls: string[]) => {
-    await Promise.all(
-      urls.map((url) => {
-        return download(mainWindow, url)
+  ipcMain.handle('download', async () => {
+    const client = new Twitter({
+      bearer_token: '*** BEARER TOKEN ***',
+    })
+
+    const userId = '*** user id ***'
+    const data = await client.get(`users/${userId}/liked_tweets`, {
+      expansions: 'attachments.media_keys',
+      'media.fields': 'url',
+    })
+
+    const downloadURLs: string[] = data.includes.media
+      .map((medium: { url?: string }) => {
+        return medium.url
       })
-    )
+      .filter((url: string | typeof undefined) => typeof url === 'string')
+
+    downloadURLs.forEach(async (url) => {
+      const downloadItem = await download(mainWindow, url)
+      await new Promise((resolve) => {
+        downloadItem.once('done', () => resolve(null))
+      })
+    })
   })
 }
 

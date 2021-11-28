@@ -5,5 +5,5 @@ declare global {
 }
 
 export interface Sandbox {
-  download: (urls: string[]) => Promise<void>
+  download: () => Promise<void>
 }
